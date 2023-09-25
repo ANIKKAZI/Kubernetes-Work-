@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    type: backend
+    app: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: backend
+      app: app1
+  template:
+    metadata:
+      name: app1
+      labels:
+        type: backend
+        app: app1
+    spec:
+      containers:
+        - name: app1
+          image: us-central1-docker.pkg.dev/my-first-project-388722/app3/app3
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: gke-disk-form
+              mountPath: /Anik_PV_dir
+      volumes:
+        - name: gke-disk-form
+          persistentVolumeClaim:
+            claimName: gke-disk-form

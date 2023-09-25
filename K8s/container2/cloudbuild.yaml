@@ -1,0 +1,38 @@
+steps:
+  # Docker Build
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "us-central1-docker.pkg.dev/my-first-project-388722/app2/app2:latest",
+        ".",
+      ]
+
+  # Docker push to Google Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "us-central1-docker.pkg.dev/my-first-project-388722/app2/app2:latest",
+      ]
+
+  - name: "gcr.io/cloud-builders/kubectl"
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-1",
+      ]
+    args: ["apply", "-f", "deploy3.yml"]
+
+  - name: "gcr.io/cloud-builders/kubectl"
+    env:
+      [
+        "CLOUDSDK_COMPUTE_REGION=us-central1",
+        "CLOUDSDK_CONTAINER_CLUSTER=cluster-1",
+      ]
+    args: ["apply", "-f", "service3.yml"]
+
+# Store images in Google Artifact Registry
+images:
+  - us-central1-docker.pkg.dev/my-first-project-388722/app2/app2:latest

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+spec:
+  type: LoadBalancer
+  selector:
+    type: backend
+    app: app1
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30003
